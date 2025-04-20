@@ -1,0 +1,28 @@
+
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+    <h2>Projects</h2>
+    <a href="{% url 'project_create' %}" class="btn btn-success mb-3">Create Project</a>
+    <ul class="list-group">
+        {% for project in projects %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>{{ project.name }}</strong><br>
+                <span class="badge bg-{{ project.completed|yesno:'success,warning' }}">
+                    {{ project.completed|yesno:"Completed,Active" }}
+                </span>
+            </div>
+            <div>
+                <!-- Edit Button -->
+                <a href="{% url 'edit_project' project.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+
+                <!-- Delete Button -->
+                <a href="{% url 'delete_project' project.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </div>
+        </li>
+        {% empty %}
+            <p class="text-muted">You have no projects yet. <a href="{% url 'project_create' %}">Create a new one!</a></p>
+        {% endfor %}
+    </ul>
+{% endblock %}

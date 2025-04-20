@@ -1,0 +1,41 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+<h2>Tasks</h2>
+<a href="{% url 'task_create' %}" class="btn btn-success mb-3">Create Task</a>
+
+<form method="get" class="row mb-4">
+    <div class="col-md-4">
+        <select name="category" class="form-select">
+            <option value="" {% if not category_filter %}selected{% endif %}>All Categories</option>
+            <option value="work" {% if category_filter == 'work' %}selected{% endif %}>Work</option>
+            <option value="personal" {% if category_filter == 'personal' %}selected{% endif %}>Personal</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <select name="status" class="form-select">
+            <option value="" {% if not status_filter %}selected{% endif %}>All Statuses</option>
+            <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Active</option>
+            <option value="inprogress" {% if status_filter == 'inprogress' %}selected{% endif %}>In Progress</option>
+            <option value="complete" {% if status_filter == 'complete' %}selected{% endif %}>Complete</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-outline-primary w-100" type="submit">Filter</button>
+    </div>
+</form>
+
+<ul class="list-group">
+    {% for task in tasks %}
+    <li class="list-group-item d-flex justify-content-between">
+        <div>
+            <strong>{{ task.title }}</strong> ({{ task.category|title }})<br>
+            Due: {{ task.due_date }} | Status: {{ task.status|title }}
+        </div>
+        <div>
+            <a href="{% url 'edit_task' task.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+            <a href="{% url 'delete_task' task.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

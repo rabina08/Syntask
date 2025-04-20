@@ -1,0 +1,47 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+<h2>Welcome, {{ user.first_name }} 👋</h2>
+
+<h4 class="mt-4">Quick Overview</h4>
+<div class="row">
+    {% for stat in stats %}
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">{{ stat.status|title }}</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ stat.total }} tasks</h5>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No tasks to show yet.</p>
+    {% endfor %}
+</div>
+
+
+
+<h4 class="mt-5">📊 Project-wise Progress Report</h4>
+
+{% if project_data %}
+    {% for data in project_data %}
+        <h5 class="mt-3">{{ data.project.name }}</h5>
+        <p>Total: {{ data.total_tasks }} | Completed: {{ data.completed_tasks }}</p>
+
+        <div class="progress mb-2">
+            <div class="progress-bar" role="progressbar" style="width: '{{ data.completion_percentage|floatformat:0 }}%'" aria-valuenow="{{ data.completion_percentage|floatformat:0 }}" aria-valuemin="0" aria-valuemax="100">
+                {{ data.completion_percentage|floatformat:0 }}%
+            </div>
+        </div>
+
+        <ul>
+            {% for status in data.task_status_summary %}
+                <li>{{ status.status|title }}: {{ status.total }} tasks</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% else %}
+    <p>No projects or tasks to show progress for.</p>
+{% endif %}
+
+
+{% endblock %}

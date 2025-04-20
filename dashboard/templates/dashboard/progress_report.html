@@ -1,0 +1,51 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<h2>Progress Report</h2>
+
+<!-- Filter form for project and category -->
+<form method="get" class="row mb-4">
+    <div class="col-md-4">
+        <select name="project" class="form-select">
+            <option value="">All Projects</option>
+            {% for project in projects %}
+            <option value="{{ project.id }}" {% if project.id == project_id %}selected{% endif %}>{{ project.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-4">
+        <select name="category" class="form-select">
+            <option value="">All Categories</option>
+            <option value="work" {% if category_filter == 'work' %}selected{% endif %}>Work</option>
+            <option value="personal" {% if category_filter == 'personal' %}selected{% endif %}>Personal</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-outline-primary w-100" type="submit">Filter</button>
+    </div>
+</form>
+
+<!-- Display project-wise task completion with progress bar -->
+{% if project_data %}
+    {% for data in project_data %}
+        <h3>{{ data.project.name }}</h3>
+        <p>Total Tasks: {{ data.total_tasks }} | Completed Tasks: {{ data.completed_tasks }}</p>
+        
+        <!-- Progress Bar -->
+        <div class="progress mb-4">
+            <div class="progress-bar" role="progressbar" style="width: '{{ data.completion_percentage|floatformat:0 }}%'" aria-valuenow="{{ data.completion_percentage|floatformat:0 }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+
+        <!-- Task Status Summary -->
+        <h4>Task Status Summary</h4>
+        <ul>
+            {% for status in data.task_status_summary %}
+            <li>{{ status.status|title }}: {{ status.total }} tasks</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% else %}
+    <p>No progress data available for the selected filters.</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+    <h2>Create New Project</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Project Name:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+
+            <label for="description">Project Description:</label><br>
+            <textarea name="description" rows="4" cols="40"></textarea><br><br>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Create Project</button>
+    </form>
+{% endblock %}

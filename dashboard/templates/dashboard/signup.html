@@ -1,0 +1,59 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<h2>Create an Account</h2>
+<form method="post">
+    {% csrf_token %}
+
+   
+    <div class="form-group">
+        <label for="{{ form.first_name.id_for_label }}">First Name:</label>
+        {{ form.first_name }}
+        {% for error in form.first_name.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+   
+    <div class="form-group">
+        <label for="{{ form.last_name.id_for_label }}">Last Name:</label>
+        {{ form.last_name }}
+        {% for error in form.last_name.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+   
+    <div class="form-group">
+        <label for="{{ form.email.id_for_label }}">Email:</label>
+        {{ form.email }}
+        {% for error in form.email.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    
+    <div class="form-group">
+        <label for="{{ form.password1.id_for_label }}">Password:</label>
+        {{ form.password1 }}
+        {% for error in form.password1.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    
+    <div class="form-group">
+        <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
+        {{ form.password2 }}
+        {% for error in form.password2.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-success">Sign Up</button>
+</form>
+
+
+<a href="{% url 'login' %}">Already have an account? Login</a>
+{% endblock %}
+
